@@ -71,7 +71,7 @@ return (
           <div className="flex flex-wrap -mx-4 -mb-10 text-center">
             {currentPosts.map((item: PostItem) => (
               <div key={item.id} className="w-full sm:w-1/2 md:w-1/3 lg:w-1/3 px-4 mb-10">
-                <Postcard title={item.title} body={item.body} />
+                <Postcard id={item.id} title={item.title} body={item.body} />
               </div>
             ))}
           </div>
