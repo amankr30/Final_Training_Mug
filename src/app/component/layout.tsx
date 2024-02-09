@@ -20,28 +20,25 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       if (searchQuery) {
         try {
           const firstWord = searchQuery.split(' ')[0];
-      // Encode the first word
-      const encodedFirstWord = encodeURIComponent(firstWord);
-      const link = `https://jsonplaceholder.typicode.com/photos?q=${encodedFirstWord}`;
-      const link2 = `https://jsonplaceholder.typicode.com/posts?q=${searchQuery}`;
-      const response = await axios.get(link);
-      const res =await axios.get(link2);
-      const data = response.data;
-      const data2=res.data;
-      console.log(searchQuery);
-      console.log(link);
-
-      setSearchResults(data);
-      setSearchResultsPosts(data2);
-      console.log(searchResults);
+          const encodedFirstWord = encodeURIComponent(firstWord);
+          const link = `https://jsonplaceholder.typicode.com/photos?q=${encodedFirstWord}`;
+          const link2 = `https://jsonplaceholder.typicode.com/posts?q=${searchQuery}`;
+          const response = await axios.get(link);
+          const res = await axios.get(link2);
+          const data = response.data;
+          const data2 = res.data;
+  
+          setSearchResults(data);
+          setSearchResultsPosts(data2);
         } catch (error) {
           console.error('Error fetching search results:', error);
         }
       }
     };
-
+  
     fetchSearchResults();
-  }, [searchQuery]);
+  }, [searchQuery]); // Include searchQuery as the only dependency
+  
 
   // useEffect(() => {
   //   console.log('searchResults updated:', searchResults);
@@ -63,7 +60,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               <div className="search-results-cards flex">
                 {searchResults.slice(0, 3).map((item) => (
                   <div key={item.id} className="p-4 w-full md:w-1/3 flex-auto">
-                    <Card url={item.url} title={item.title} />
+                    <Card url={item.url} title={item.title} id={item.id} />
                   </div>
                 ))}
               </div>
@@ -77,7 +74,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               <div className="search-results-cards flex">
                 {searchResultsPosts.slice(0, 3).map((item) => (
                   <div key={item.id} className="p-4 w-full md:w-1/3 flex-none">
-                    <Postcard title={item.title} body={item.body} />
+                    <Postcard title={item.title} body={item.body} id={item.id} />
                   </div>
                 ))}
               </div>

@@ -7,6 +7,7 @@ import { addPost, deletePost } from "../store/slices/postsSlice";
 import { toggleLike } from "../store/slices/likeSlice";
 import { FcLike } from "react-icons/fc";
 import { FcLikePlaceholder } from "react-icons/fc";
+import Image from 'next/image';
 
 interface CardProps {
   id: number;
@@ -48,6 +49,7 @@ useEffect(()=>{
   return (
     <div className="h-full border-2 border-gray-800 border-opacity-60 rounded-lg overflow-hidden flex flex-col justify-between">
       <div>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img className="lg:h-52 md:h-36 w-full object-cover object-center" src={url} alt="blog" />
       </div>
       <div className=" ">
