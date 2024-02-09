@@ -5,15 +5,15 @@ interface Like {
     liked: boolean;
 }
 
-const savedLikesJSON = localStorage.getItem('postsavedLikes');
-const savedLikes: Like[] = savedLikesJSON ? JSON.parse(savedLikesJSON) : [];
-
-// Ensure localStorage is updated if 'postsavedLikes' is not found
-if (!savedLikesJSON) {
-  localStorage.setItem('postsavedLikes', JSON.stringify(savedLikes));
+const loadSavedLikes = (): Like[] => {
+    if (typeof window !== 'undefined') {
+        const savedLikesJSON = localStorage.getItem('postsavedLikes');
+        return savedLikesJSON ? JSON.parse(savedLikesJSON) : [];
+    }
+    return [];
 }
 
-const initialState: Like[] = savedLikes;
+const initialState: Like[] = loadSavedLikes();
 
 const postlikesSlice = createSlice({
     name: 'postlikes',
@@ -28,7 +28,9 @@ const postlikesSlice = createSlice({
             } else {
                 state.push({ postId, liked: true });
             }
-            localStorage.setItem('postsavedLikes', JSON.stringify(state));
+            if (typeof window !== 'undefined') {
+                localStorage.setItem('postsavedLikes', JSON.stringify(state));
+            }
         },
         toggleUnlike(state, action: PayloadAction<number>) {
             const postId = action.payload;
@@ -36,7 +38,9 @@ const postlikesSlice = createSlice({
             const existingLikeIndex = state.findIndex(like => like.postId === postId);
             if (existingLikeIndex !== -1) {
                 state[existingLikeIndex].liked = false;
-                localStorage.setItem('postsavedLikes', JSON.stringify(state));
+                if (typeof window !== 'undefined') {
+                    localStorage.setItem('postsavedLikes', JSON.stringify(state));
+                }
             }
         },
     }

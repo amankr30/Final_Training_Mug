@@ -5,10 +5,11 @@ interface Post {
     title: string;
     url: string;
 }
-
+let savedPosts=[];
 // Load saved posts from local storage or initialize with an empty array
-const savedPosts = JSON.parse(localStorage.getItem('savedPosts') || '[]');
-
+if (typeof window !== 'undefined') {
+    savedPosts = JSON.parse(localStorage.getItem('savedPosts') || '[]');
+}
 const initialState: Post[] = savedPosts;
 
 const postsSlice = createSlice({

@@ -5,37 +5,47 @@ interface Like {
     liked: boolean;
 }
 
-const savedLikes = JSON.parse(localStorage.getItem('savedLikes') || '[]');
+const loadSavedLikes = (): Like[] => {
+    if (typeof window !== 'undefined') {
+        const savedLikesJSON = localStorage.getItem('postsavedLikes');
+        return savedLikesJSON ? JSON.parse(savedLikesJSON) : [];
+    }
+    return [];
+}
 
-const initialState: Like[] = savedLikes;
+const initialState: Like[] = loadSavedLikes();
 
-const likesSlice = createSlice({
-    name: 'likes',
+const postlikesSlice = createSlice({
+    name: 'postlikes',
     initialState,
     reducers: {
         toggleLike(state, action: PayloadAction<number>) {
             const postId = action.payload;
             console.log('Toggling like for post:', postId);
-            const existingLike = state.find(like => like.postId === postId);
-            if (existingLike) {
-                existingLike.liked = !existingLike.liked;
+            const existingLikeIndex = state.findIndex(like => like.postId === postId);
+            if (existingLikeIndex !== -1) {
+                state[existingLikeIndex].liked = !state[existingLikeIndex].liked;
             } else {
                 state.push({ postId, liked: true });
             }
-            localStorage.setItem('savedLikes', JSON.stringify(state));
+            if (typeof window !== 'undefined') {
+                localStorage.setItem('postsavedLikes', JSON.stringify(state));
+            }
         },
         toggleUnlike(state, action: PayloadAction<number>) {
             const postId = action.payload;
             console.log('Toggling unlike for post:', postId);
-            const existingLike = state.find(like => like.postId === postId);
-            if (existingLike) {
-                existingLike.liked = false;
-                localStorage.setItem('savedLikes', JSON.stringify(state));
+            const existingLikeIndex = state.findIndex(like => like.postId === postId);
+            if (existingLikeIndex !== -1) {
+                state[existingLikeIndex].liked = false;
+                if (typeof window !== 'undefined') {
+                    localStorage.setItem('postsavedLikes', JSON.stringify(state));
+                }
             }
         },
     }
 });
 
-export const { toggleLike, toggleUnlike } = likesSlice.actions;
+export const { toggleLike, toggleUnlike } = postlikesSlice.actions;
 
-export default likesSlice.reducer;
+export default postlikesSlice.reducer;

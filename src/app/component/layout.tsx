@@ -1,10 +1,10 @@
+
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Header from '../component/header';
 import Card from "../component/card";
 import Postcard from './postcard';
-import { LayoutProps } from '../../../.next/types/app/layout';
-
+import { LayoutProps } from './LayoutProps'; 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const [searchQuery, setSearchQuery] = useState<string | null>(null);
   const [searchResults, setSearchResults] = useState<any[]>([]);

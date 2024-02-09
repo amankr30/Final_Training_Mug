@@ -7,8 +7,10 @@ interface Post {
 }
 
 // Load saved posts from local storage or initialize with an empty array
-const savedTexts = JSON.parse(localStorage.getItem('savedTexts') || '[]');
-
+let savedTexts = [];
+if (typeof window !== 'undefined') {
+    savedTexts = JSON.parse(localStorage.getItem('savedTexts') || '[]');
+}
 const initialState: Post[] = savedTexts;
 
 const textpostSlice = createSlice({
